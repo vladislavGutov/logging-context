@@ -8,7 +8,6 @@ scalaVersion := v
 
 
 lazy val scalacSettings = Seq(
-  "-Ypartial-unification",
   "-feature", // Emit warning and location for usages of features that should be imported explicitly.
   "-language:existentials",
   "-language:higherKinds",
