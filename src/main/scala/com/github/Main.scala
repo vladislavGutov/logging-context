@@ -1,6 +1,8 @@
 package com.github
 
-import cats.effect.{ExitCode, IO, IOApp}
+import java.util.concurrent.Executors
+
+import cats.effect.{ContextShift, ExitCode, IO, IOApp, Timer}
 import com.github.logging._
 import io.chrisdavenport.log4cats.Logger
 import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
@@ -8,6 +10,8 @@ import cats.instances.list._
 import cats.syntax.parallel._
 import cats.syntax.functor._
 import cats.syntax.apply._
+
+import scala.concurrent.ExecutionContext
 
 object Sequential extends IOApp {
 
@@ -79,6 +83,14 @@ object Concurrent extends IOApp {
     } yield result
 
 
+  override protected implicit def contextShift: ContextShift[IO] = IO.contextShift(
+    ExecutionContext.global.wrapLogging
+  )
+
+  override protected implicit def timer: Timer[IO] = IO.timer(
+    ExecutionContext.global.wrapLogging,
+    Executors.newScheduledThreadPool(2).wrapLogging
+  )
 
   private val log: Logger[IO] = Slf4jLogger.getLogger[IO].mdc
 }

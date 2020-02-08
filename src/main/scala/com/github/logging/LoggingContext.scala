@@ -14,7 +14,7 @@ object LoggingContext {
 
   def apply(): LoggingContext = LoggingContext(Map())
 
-  private val localContext: DynamicVariable[LoggingContext] = new DynamicVariable[LoggingContext](LoggingContext())
+  private[logging] val localContext: DynamicVariable[LoggingContext] = new DynamicVariable[LoggingContext](LoggingContext())
 
 
   def get[F[_]](implicit F: Sync[F]): F[LoggingContext] = F.delay {
