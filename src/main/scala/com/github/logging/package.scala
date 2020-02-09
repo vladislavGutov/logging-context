@@ -10,7 +10,7 @@ import scala.concurrent.ExecutionContext
 
 package object logging {
 
-  implicit class MdcExtension[F[_] : Sync](logger: StructuredLogger[F]) {
+  implicit class MdcExtension[F[_]: Sync](logger: StructuredLogger[F]) {
     def mdc: Logger[F] = new MdcLogger[F](logger)
   }
 
