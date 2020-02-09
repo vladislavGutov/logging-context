@@ -2,11 +2,9 @@ name := "logging-context"
 
 version := "0.1"
 
-lazy val v = "2.13.1"
+scalaVersion := "2.13.1"
 
-scalaVersion := v
-
-lazy val scalacSettings = Seq(
+scalacOptions ++= Seq(
   "-feature", // Emit warning and location for usages of features that should be imported explicitly.
   "-language:existentials",
   "-language:higherKinds",
@@ -15,16 +13,11 @@ lazy val scalacSettings = Seq(
   "-language:dynamics"
 )
 
-scalacOptions ++= scalacSettings
-
-addCompilerPlugin("org.typelevel" % s"kind-projector_$v" % "0.11.0")
-
 val catsVersion       = "2.1.0"
 val catsEffectVersion = "2.1.1"
 val catsLoggerVersion = "1.0.1"
 val logbackVersion    = "1.2.3"
-
-val aspectVersion = "1.9.5"
+val aspectVersion     = "1.9.5"
 
 libraryDependencies ++= {
   Seq(
@@ -36,3 +29,16 @@ libraryDependencies ++= {
     "org.aspectj"       % "aspectjrt"       % aspectVersion,
   )
 }
+
+def getWeaver = Def.task {
+  update.value.matching {
+    moduleFilter(organization = "org.aspectj", name = "aspectjweaver") &&
+    artifactFilter(`type` = "jar")
+  }.headOption
+}
+
+javaOptions in run ++= {
+  getWeaver.value.toSeq.map("-javaagent:" + _)
+}
+
+fork in run := true
