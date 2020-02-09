@@ -5,7 +5,7 @@ version := "0.1"
 scalaVersion := "2.13.1"
 
 scalacOptions ++= Seq(
-  "-feature", // Emit warning and location for usages of features that should be imported explicitly.
+  "-feature",
   "-language:existentials",
   "-language:higherKinds",
   "-language:implicitConversions",
