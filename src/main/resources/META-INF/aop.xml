@@ -1,0 +1,17 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+    <weaver>
+        <include within="com.github..*"/>
+        <include within="scala.concurrent..*"/>
+        <include within="cats.effect..*"/>
+    </weaver>
+
+    <aspects>
+        <aspect name="com.github.logging.aop.ExecutorAspect"/>
+        <aspect name="com.github.logging.aop.ExecutorServiceAspect"/>
+        <aspect name="com.github.logging.aop.ScheduledExecutorServiceAspect"/>
+        <aspect name="com.github.logging.aop.ThreadFactoryAspect"/>
+    </aspects>
+
+</aspectj>

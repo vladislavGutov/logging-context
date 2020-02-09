@@ -1,16 +1,12 @@
 package com.github
 
-import java.util.concurrent.ScheduledExecutorService
-
 import cats.effect.Sync
 import cats.syntax.functor._
 import io.chrisdavenport.log4cats.{Logger, StructuredLogger}
 
-import scala.concurrent.ExecutionContext
-
 package object logging {
 
-  implicit class MdcExtension[F[_] : Sync](logger: StructuredLogger[F]) {
+  implicit class MdcExtension[F[_]: Sync](logger: StructuredLogger[F]) {
     def mdc: Logger[F] = new MdcLogger[F](logger)
   }
 
@@ -24,14 +20,6 @@ package object logging {
       } { old =>
         LoggingContext.set(old).void
       }
-  }
-
-  implicit class LoggingEC(ec: ExecutionContext) {
-    def wrapLogging: ExecutionContext = new LoggingExecutionContext(ec)
-  }
-
-  implicit class LoggingSES(service: ScheduledExecutorService) {
-    def wrapLogging: ScheduledExecutorService = new LoggingScheduledExecutorService(service)
   }
 
 }
