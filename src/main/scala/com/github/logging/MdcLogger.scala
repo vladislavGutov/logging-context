@@ -4,7 +4,7 @@ import cats.effect.Sync
 import cats.syntax.flatMap._
 import io.chrisdavenport.log4cats.{Logger, StructuredLogger}
 
-class MdcLogger[F[_] : Sync](logger: StructuredLogger[F]) extends Logger[F] {
+class MdcLogger[F[_]: Sync](logger: StructuredLogger[F]) extends Logger[F] {
 
   @inline
   private def withCtx(f: LoggingContext => F[Unit]): F[Unit] =

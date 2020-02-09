@@ -15,7 +15,6 @@ class ExecutorServiceAspect extends ContextPopulationWrapper {
   @Pointcut(value = "call( * java.util.concurrent.ExecutorService+.invoke*(java.util.Collection, ..))")
   def invokePointcut(): Unit = ()
 
-
   @Around(value = "submitCallablePointcut()", argNames = "jp")
   def submitCallableHandle(jp: ProceedingJoinPoint): Object = handleCallableArgument(jp)
 
