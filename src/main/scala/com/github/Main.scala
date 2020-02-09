@@ -43,12 +43,11 @@ object Concurrent extends IOApp {
 
   private val types = Vector("type1", "type2", "type3")
 
-
   override def run(args: List[String]): IO[ExitCode] = {
 
-    (0 to 10).toList.parTraverse(run)
+    (0 to 10).toList
+      .parTraverse(run)
       .as(ExitCode.Success)
-
 
   }
 
@@ -56,15 +55,15 @@ object Concurrent extends IOApp {
     val idx = id % types.length
     val tpe = types(idx)
     IO.shift *>
-    op(id.toString, tpe).withLogContext(_.id(id.toString)) <* IO.shift
+      op(id.toString, tpe).withLogContext(_.id(id.toString)) <* IO.shift
   }
 
   private def op(id: String, tpe: String): IO[String] = {
     for {
       _      <- log.info(s"op start [static id = $id]")
-      _ <- IO.shift
+      _      <- IO.shift
       result <- opInner(id, tpe).withLogContext(_.tpe(tpe))
-      _ <- IO.shift
+      _      <- IO.shift
       _      <- log.info(s"op end [static id = $id]")
     } yield result
   }
@@ -72,13 +71,11 @@ object Concurrent extends IOApp {
   private def opInner(id: String, tpe: String): IO[String] =
     for {
       _      <- log.info(s"op_inner start [static id = $id, static type = $tpe]")
-      _ <- IO.shift
+      _      <- IO.shift
       result <- IO("user")
-      _ <- IO.shift
+      _      <- IO.shift
       _      <- log.info(s"op_inner end [static id = $id, static type = $tpe]")
     } yield result
-
-
 
   private val log: Logger[IO] = Slf4jLogger.getLogger[IO].mdc
 }

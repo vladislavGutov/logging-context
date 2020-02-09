@@ -6,7 +6,7 @@ import io.chrisdavenport.log4cats.{Logger, StructuredLogger}
 
 package object logging {
 
-  implicit class MdcExtension[F[_] : Sync](logger: StructuredLogger[F]) {
+  implicit class MdcExtension[F[_]: Sync](logger: StructuredLogger[F]) {
     def mdc: Logger[F] = new MdcLogger[F](logger)
   }
 
